@@ -1,15 +1,26 @@
 from tkinter import * #importar libreria
 
 def pulsar_tecla(tecla):
-    resultado.set(int(resultado.get())+numero)
-    
-    #Pantalla.config(text=int(tecla)) Est codigo lo he creado como alternativa pero para
-    #que funcione debe cambiarse el  textvariable de la linea 19 por text="0"
-    
-resultado=StringVar()
-resultado.set("0")
+    actual =expresion.get()
+    if actual == "Error" or actual == "No valido":
+        actual =""
+    elif actual == "0" and tecla in ("1", "2", "3", "4", "5", "6", "7", "8", "9", "0"):
+        actual = ""
+    elif actual[-1] in ("+", "-", "*", "/") and tecla in ("+", "-", "*", "/"):
+        actual=actual[:-1]
+    actual += str(tecla)
+    expresion.set(actual)
 
+def pulsar_limpiar():
+    expresion.set("0")
+def division():
+    expresion.set("0")
+    
 ventana=Tk() #definir repositorio ventana
+
+expresion=StringVar()
+expresion.set("0")
+
 ventana.title("mi calculadora") # asignar titulo
 ventana.config(bg="blue") #asignar color de fondo
 ventana.geometry("400x400") #asignar dimensiones
@@ -17,10 +28,10 @@ ventana.resizable(width="True", height="True") #cambiar tamaño de ventana
 
 marco=Frame(ventana)
 
-Pantalla=Label(marco, textvariable=resultado,width=3, anchor="e", bd=4, relief="sunken",font="Arial 16")
+Pantalla=Label(marco, textvariable=expresion,width=3, anchor="e", bd=4, relief="sunken",font="Arial 16")
 Pantalla.grid(row=0, column=0, columnspan=4, sticky="nsew")
 
-limpiar=Button(marco, text="C", width=3, font="Arial 16")#, command=pulsar_limpiar)
+limpiar=Button(marco, text="C", width=3, font="Arial 16",command=pulsar_limpiar)
 limpiar.grid(row=1, column=0,columnspan=2, padx=2, pady=2, sticky="nsew")
 division=Button(marco, text="/", width=3, font="Arial 16")
 division.grid(row=1, column=2,padx=2, pady=2)
